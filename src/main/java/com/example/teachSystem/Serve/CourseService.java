@@ -15,7 +15,9 @@ public class CourseService {
     }
 
     public Course getCourseById(String id) {
-        return courseDao.getCourseById(id);
+        Course course=courseDao.getCourseById(id);
+        return course;
+//        return courseDao.getCourseById(id);
     }
 
     // 其他操作课程的方法

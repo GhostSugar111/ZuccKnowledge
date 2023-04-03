@@ -1,4 +1,5 @@
 package com.example.teachSystem.Entity;
+
 import javax.persistence.*;
 
 @Entity
@@ -18,6 +19,9 @@ public class Tag {
     }
 
     private Integer id;
+    @ManyToOne
+    @JoinColumn(name="id")
+    private TagGroup tagGroup;
     @Basic
     @Column(name="groupName")
     public String getGroupName() {

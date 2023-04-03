@@ -1,6 +1,7 @@
 package com.example.teachSystem.Entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "knowledge", schema = "zuccknowledge", catalog = "")
@@ -38,7 +39,9 @@ public class Knowledge {
     public void setId(Integer id) {
         this.id = id;
     }
-
+    @ManyToMany
+    @JoinColumn(name="id")
+    private List<Tag> tagList;
     private Integer id;
     private String intro;
     private String keystatement;

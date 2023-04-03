@@ -1,14 +1,18 @@
 package com.example.teachSystem.Controller;
 
 import com.example.teachSystem.Entity.Course;
+import com.example.teachSystem.Serve.CourseService;
 import com.example.teachSystem.repository.CourseRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/course")
 public class courseController {
+    private CourseService courseService;
     private final CourseRepository courseRepository;
 
     public courseController(CourseRepository courseRepository) {
@@ -20,31 +24,42 @@ public class courseController {
         return courseRepository.save(course);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("update/{id}")
     public Course editCourse(@PathVariable String id, @RequestBody Course course) {
         course.setId(Integer.valueOf(id));
         return courseRepository.save(course);
     }
 
     @GetMapping("/{id}")
-    public Course getCourse(@PathVariable String id) {
-        return courseRepository.findById(id);
+    public Course getCourse(@PathVariable Integer id) {
+//        Course CourseEnity =courseService.getCourseById();
+
+
+
+        return courseRepository.findByIdLike(id);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteCourse(@PathVariable String id) {
+    @DeleteMapping("/delete/{id}")
+    public String deleteCourse(@PathVariable Integer id) {
         courseRepository.deleteById(id);
+        return "删除成功";
     }
 
-    @PutMapping("/{id}/tags")
-    public Course setCourseTags(@PathVariable String id, @RequestBody List<String> tags) {
-        Course course = courseRepository.findById(id);
+    @PutMapping("setTag/{id}")
+    public Course setCourseTags(@PathVariable Integer id, @RequestBody Map<String, String> requestBody) {
+        Course course = courseRepository.findByIdLike(id);
         if (course != null) {
-            course.setTag(String.join(",", tags));
-            course = courseRepository.save(course);
+            String tagsStr = requestBody.get("tags");
+            if (tagsStr != null) {
+                List<String> tags = Arrays.asList(tagsStr.split(","));
+                course.setTag(String.join(",", tags));
+                course = courseRepository.save(course);
+            }
         }
         return course;
     }
+
+
 }
 //package com.example.teachSystem.Controller;
 //

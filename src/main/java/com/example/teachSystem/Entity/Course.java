@@ -1,6 +1,7 @@
 package com.example.teachSystem.Entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "course", schema = "zuccknowledge", catalog = "")
@@ -23,6 +24,15 @@ public class Course {
     public void setId(Integer id) {
         this.id = id;
     }
+    @ManyToMany
+    @JoinColumn(name="id")
+    private List<Knowledge> knowledgeList;
+
+    @ManyToMany
+    @JoinColumn(name="id")
+    private List<Tag> tagList;
+
+
     @Basic
     @Column(name = "intro")
     public String getIntro() {
