@@ -4,7 +4,7 @@ import com.example.teachSystem.Entity.Course;
 import com.example.teachSystem.Entity.Knowledge;
 import com.example.teachSystem.Entity.Tag;
 import com.example.teachSystem.Entity.TagGroup;
-import com.example.teachSystem.formbean.Coursebean;
+import com.example.teachSystem.formbean.CourseForm;
 import com.example.teachSystem.repository.CourseRepository;
 import com.example.teachSystem.repository.KnowledgeRepository;
 import com.example.teachSystem.repository.TagGroupRepository;
@@ -40,7 +40,7 @@ public class CrudController {
     }
 
     @GetMapping("/crud")
-    List<Coursebean> excuteBasicCrud(){
+    List<CourseForm> excuteBasicCrud(){
         //创建1个标签组
         TagGroup TagGroupEntity = new TagGroup();
         TagGroupEntity.setName("便签组" + RandomStringUtils.randomAlphabetic(2));
@@ -68,9 +68,9 @@ public class CrudController {
 
         //检索出所有的课程
         List<Course> allCourse = this.courseRepository.findAll();
-        List<Coursebean> courseList = new ArrayList<>();
+        List<CourseForm> courseList = new ArrayList<>();
         allCourse.stream().forEach(item -> {
-            Coursebean q = new Coursebean();
+            CourseForm q = new CourseForm();
             BeanUtils.copyProperties(item, q);
             courseList.add(q);
         });

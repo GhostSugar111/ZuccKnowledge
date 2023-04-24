@@ -1,24 +1,18 @@
 package com.example.teachSystem.Serve;
 
 import com.example.teachSystem.Entity.Course;
-import com.example.teachSystem.dao.ICourseDao;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.example.teachSystem.formbean.CourseForm;
 
-@Service
-public class CourseService {
-    private final ICourseDao courseDao;
+public interface CourseService {
 
-    @Autowired
-    public CourseService(ICourseDao courseDao) {
-        this.courseDao = courseDao;
-    }
+    CourseForm addCourse(Course course);
 
-    public Course getCourseById(String id) {
-        Course course=courseDao.getCourseById(id);
-        return course;
-//        return courseDao.getCourseById(id);
-    }
+    CourseForm editCourse(Integer id, CourseForm courseForm);
 
-    // 其他操作课程的方法
+    CourseForm getCourseById(Integer id);
+
+    void deleteCourse(Integer id);
+
+    CourseForm setCourseTags(Integer id, String tags);
+
 }

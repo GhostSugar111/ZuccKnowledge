@@ -24,12 +24,24 @@ public class Course {
     public void setId(Integer id) {
         this.id = id;
     }
+//    @ManyToMany
+//    @JoinColumn(name="id")
+//    private List<Knowledge> knowledgeList;
+//
+//    @ManyToMany
+//    @JoinColumn(name="id")
+//    private List<Tag> tagList;
+
     @ManyToMany
-    @JoinColumn(name="id")
+    @JoinTable(name = "course_knowledge",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "knowledge_id"))
     private List<Knowledge> knowledgeList;
 
     @ManyToMany
-    @JoinColumn(name="id")
+    @JoinTable(name = "course_tag",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<Tag> tagList;
 
 
@@ -87,4 +99,19 @@ public class Course {
     }
 
     private String knowledge;
+
+
+    // 添加 toString 方法，方便打印输出对象信息
+    @Override
+    public String toString() {
+        return "Course{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                ", intro='" + intro + '\'' +
+                ", book='" + book + '\'' +
+                ", tag='" + tag + '\'' +
+                ", teacher='" + teacher + '\'' +
+                ", knowledge='" + knowledge + '\'' +
+                '}';
+    }
 }
