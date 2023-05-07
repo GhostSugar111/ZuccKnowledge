@@ -1,6 +1,7 @@
 package com.example.teachSystem.Controller;
 
 import com.example.teachSystem.Entity.Knowledge;
+import com.example.teachSystem.Entity.ReadLog;
 import com.example.teachSystem.Serve.KnowledgeService;
 import com.example.teachSystem.formbean.KnowledgeForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,25 @@ public class KnowledgeController {
     @Autowired
     public KnowledgeController(KnowledgeService knowledgeService) {
         this.knowledgeService = knowledgeService;
+    }
+
+    // 新增方法：记录阅读记录
+    @PostMapping("/{id}/readLog")
+    public void addReadLog(@PathVariable Integer id, @RequestParam String reader) {
+        knowledgeService.addReadLog(id, reader);
+    }
+
+    // 新增方法：获取阅读记录列表
+    @GetMapping("/{id}/readLogs")
+    public List<ReadLog> getReadLogs(@PathVariable Integer id, @RequestParam(defaultValue = "10") Integer limit,
+                                     @RequestParam(defaultValue = "0") Integer offset) {
+        return knowledgeService.getReadLogs(id, limit, offset);
+    }
+
+    // 新增方法：获取知识点阅读总数
+    @GetMapping("/{id}/readCount")
+    public Long getReadCount(@PathVariable Integer id) {
+        return knowledgeService.getReadCount(id);
     }
 
     @PostMapping("/add")
@@ -45,8 +65,4 @@ public class KnowledgeController {
         knowledgeService.deleteKnowledgeById(id);
     }
 
-//    @PutMapping("/addExample/{id}")
-//    public KnowledgeForm addExample(@PathVariable Integer id, @RequestBody Knowledge knowledge) {
-//        return knowledgeService.addExample(id, knowledge);
-//    }
 }

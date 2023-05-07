@@ -1,8 +1,10 @@
 package com.example.teachSystem.Serve;
 
 import com.example.teachSystem.Entity.Knowledge;
+import com.example.teachSystem.Entity.ReadLog;
 import com.example.teachSystem.formbean.KnowledgeForm;
 import com.example.teachSystem.repository.KnowledgeRepository;
+import com.example.teachSystem.repository.ReadLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +15,14 @@ import java.util.Optional;
 public class KnowledgeServiceImpl implements KnowledgeService {
 
     private final KnowledgeRepository knowledgeRepository;
+    private final ReadLogRepository readLogRepository;
+//    private final RedisTemplate<String, Long> redisTemplate;
 
     @Autowired
-    public KnowledgeServiceImpl(KnowledgeRepository knowledgeRepository) {
+    public KnowledgeServiceImpl(KnowledgeRepository knowledgeRepository, ReadLogRepository readLogRepository) {
         this.knowledgeRepository = knowledgeRepository;
+        this.readLogRepository = readLogRepository;
+//        this.redisTemplate = redisTemplate;
     }
 
     @Override
@@ -50,6 +56,7 @@ public class KnowledgeServiceImpl implements KnowledgeService {
             return null;
         }
     }
+
 //    @Override
 //    public KnowledgeForm addExample(Integer id){
 //        Knowledge knowledge = knowledgeRepository.findById(id).orElse(null);
@@ -58,5 +65,20 @@ public class KnowledgeServiceImpl implements KnowledgeService {
     @Override
     public void deleteKnowledgeById(Integer id) {
         knowledgeRepository.deleteById(id);
+    }
+
+    @Override
+    public void addReadLog(Integer knowledgeId, String reader) {
+
+    }
+
+    @Override
+    public List<ReadLog> getReadLogs(Integer knowledgeId, Integer limit, Integer offset) {
+        return null;
+    }
+
+    @Override
+    public Long getReadCount(Integer knowledgeId) {
+        return null;
     }
 }
