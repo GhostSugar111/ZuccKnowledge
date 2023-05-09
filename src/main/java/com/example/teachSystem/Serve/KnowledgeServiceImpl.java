@@ -8,8 +8,12 @@ import com.example.teachSystem.repository.ReadLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class KnowledgeServiceImpl implements KnowledgeService {
@@ -17,6 +21,18 @@ public class KnowledgeServiceImpl implements KnowledgeService {
     private final KnowledgeRepository knowledgeRepository;
     private final ReadLogRepository readLogRepository;
 //    private final RedisTemplate<String, Long> redisTemplate;
+    public List<Knowledge> getPrerequisites(Integer knowledgeId) {
+        Knowledge currentKnowledge = knowledgeRepository.findById(knowledgeId)
+                .orElseThrow(() -> new EntityNotFoundException("Knowledge not found"));
+        String frontIds = currentKnowledge.getFront();
+        if (frontIds == null || frontIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<Integer> frontIdsList = Arrays.stream(frontIds.split(","))
+                .map(Integer::valueOf)
+                .collect(Collectors.toList());
+        return knowledgeRepository.findAllById(frontIdsList);
+    }
 
     @Autowired
     public KnowledgeServiceImpl(KnowledgeRepository knowledgeRepository, ReadLogRepository readLogRepository) {
@@ -35,6 +51,10 @@ public class KnowledgeServiceImpl implements KnowledgeService {
     public Knowledge getKnowledgeById(Integer id) {
         Optional<Knowledge> optionalKnowledge = knowledgeRepository.findById(id);
         return optionalKnowledge.orElse(null);
+    }
+    @Override
+    public List<Knowledge> getKnowledgesByIds(List<Integer> ids) {
+        return knowledgeRepository.findByIdIn(ids);
     }
 
     @Override

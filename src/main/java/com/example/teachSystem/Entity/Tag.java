@@ -7,6 +7,10 @@ import javax.persistence.*;
 public class Tag {
     private String name;
     private String intro;
+
+    public Tag() {
+    }
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,4 +55,17 @@ public class Tag {
     public void setIntro(String intro) {
         this.intro = intro;
     }
+    private Boolean isBuiltIn;
+    @Basic
+    @Column(name="isBuiltIn")
+    public Boolean getIsBuiltIn() {
+        return isBuiltIn;
+    }
+
+    public void setIsBuiltIn(Boolean isBuiltIn) {
+        this.isBuiltIn = isBuiltIn;
+    }
+
+
+
 }

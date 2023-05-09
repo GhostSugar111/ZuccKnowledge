@@ -36,4 +36,7 @@ public class KnowledgeResponse {
     public void setData(KnowledgeForm data) {
         this.data = data;
     }
+
+
+
 }

@@ -19,9 +19,9 @@ public class tagController {
     private final TagGroupRepository tagGroupRepository;
 
     tagController(CourseRepository courseRepository,
-                        KnowledgeRepository knowledgeRepository,
-                        TagRepository tagRepository,
-                        TagGroupRepository tagGroupRepository){
+                  KnowledgeRepository knowledgeRepository,
+                  TagRepository tagRepository,
+                  TagGroupRepository tagGroupRepository){
         this.knowledgeRepository = knowledgeRepository;
         this.tagRepository = tagRepository;
         this.tagGroupRepository = tagGroupRepository;
@@ -36,6 +36,7 @@ public class tagController {
         tagEntity.setName(queryExample.get("name"));
         tagEntity.setGroupName(queryExample.get("group_name"));
         tagEntity.setIntro(queryExample.get("intro"));
+        tagEntity.setIsBuiltIn(Boolean.parseBoolean(queryExample.get("isBuiltln")));
         tagEntity = this.tagRepository.save(tagEntity);
         return tagEntity;
     }
@@ -69,10 +70,13 @@ public class tagController {
     @DeleteMapping("/tag/delete/{id}")
     public Tag deleteTag(@PathVariable String id) {
         Tag tagEntity=tagRepository.find_Id(id);
-        this.tagRepository.delete(tagEntity);
-        // 知识点属性已经封装在tag对象中，可以直接使用
-        // 这里省略了数据库操作的代码 查询记录,然后赋值给knowledge（尝试直接返回一个json）
-
+        if (tagEntity != null) {
+            // 如果是系统内置标签则禁止删除
+            if (tagEntity.getIsBuiltIn()) {
+                throw new RuntimeException("Built-in tag can not be deleted.");
+            }
+            this.tagRepository.delete(tagEntity);
+        }
         return tagEntity;
     }
     @PutMapping("/tag/setGroup/{id}")
