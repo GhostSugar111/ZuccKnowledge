@@ -73,7 +73,7 @@ public class tagController {
         if (tagEntity != null) {
             // 如果是系统内置标签则禁止删除
             if (tagEntity.getIsBuiltIn()) {
-                throw new RuntimeException("Built-in tag can not be deleted.");
+                throw new RuntimeException("内置标签不能被删除！");
             }
             this.tagRepository.delete(tagEntity);
         }

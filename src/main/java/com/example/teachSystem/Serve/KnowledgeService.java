@@ -24,6 +24,6 @@ public interface KnowledgeService {
     Long getReadCount(Integer knowledgeId);
     List<Knowledge> getPrerequisites(Integer knowledgeId);
 
-     List<Knowledge> getKnowledgesByIds(List<Integer> ids);
+    List<Knowledge> getKnowledgesByIds(List<Integer> ids);
 
 }

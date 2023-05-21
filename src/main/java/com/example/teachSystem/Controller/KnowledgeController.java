@@ -27,6 +27,7 @@ public class KnowledgeController {
     @PostMapping("/{id}/readLog")
     public void addReadLog(@PathVariable Integer id, @RequestParam String reader) {
         knowledgeService.addReadLog(id, reader);
+        addAccessCount(id); // 增加知识点的访问量
     }
 
     // 获取阅读记录列表
@@ -49,13 +50,16 @@ public class KnowledgeController {
         return knowledgeService.getKnowledgesByIds(hotKnowledgeIdInts);
     }
 
-    // 统计知识点的访问量
-//    @PostMapping("/{id}/accessCount")
-//    public void addAccessCount(@PathVariable Integer id) {
-//        String key = "knowledge:" + id;
-//        redisService.set(key, "0", 1, TimeUnit.DAYS); // 设置过期时间为1天
-//        redisService.incr(key);
-//    }
+    @PostMapping("/{id}/accessCount")
+    public void addAccessCount(@PathVariable Integer id) {
+        String key = String.valueOf(id);
+        Long accessCount = Long.valueOf(redisService.get(key)); // 获取已有的访问量
+        if (accessCount == null) {
+            accessCount = 0L;
+        }
+        accessCount++; // 增加访问量
+        redisService.set(key, String.valueOf(accessCount)); // 更新访问量
+    }
     @PostMapping("/add")
     public KnowledgeForm saveKnowledge(@RequestBody Knowledge knowledge) {
         KnowledgeForm knowledgeForm=knowledgeService.saveKnowledge(knowledge);
